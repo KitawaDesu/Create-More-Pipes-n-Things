@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "create_mpnt:andesite_alloy_sheet"
+    },
+    "C": {
+      "tag": "c:barrels/wooden"
+    }
+  },
+  "pattern": [
+    "B",
+    "C",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mpnt:andesite_fluid_tank"
+  }
+}

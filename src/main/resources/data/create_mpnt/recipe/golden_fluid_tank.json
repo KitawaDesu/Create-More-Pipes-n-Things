@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "create:golden_sheet"
+    },
+    "C": {
+      "tag": "c:barrels/wooden"
+    }
+  },
+  "pattern": [
+    "B",
+    "C",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mpnt:golden_fluid_tank"
+  }
+}

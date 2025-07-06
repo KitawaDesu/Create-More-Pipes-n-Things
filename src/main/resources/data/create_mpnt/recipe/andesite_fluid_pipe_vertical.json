@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:andesite_alloy"
+    },
+    "S": {
+      "item": "create_mpnt:andesite_alloy_sheet"
+    }
+  },
+  "pattern": [
+    "S",
+    "C",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_mpnt:andesite_fluid_pipe"
+  }
+}

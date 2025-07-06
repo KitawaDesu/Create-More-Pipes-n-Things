@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "more_stuff:rosarite_ingot"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_mpnt:rosarite_sheet"
+    }
+  ]
+}

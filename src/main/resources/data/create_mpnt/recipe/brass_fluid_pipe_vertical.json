@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:ingots/brass"
+    },
+    "S": {
+      "item": "create:brass_sheet"
+    }
+  },
+  "pattern": [
+    "S",
+    "C",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_mpnt:brass_fluid_pipe"
+  }
+}

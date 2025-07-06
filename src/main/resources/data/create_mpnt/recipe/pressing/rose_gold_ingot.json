@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "more_stuff:rose_gold_ingot"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_mpnt:rose_golden_sheet"
+    }
+  ]
+}

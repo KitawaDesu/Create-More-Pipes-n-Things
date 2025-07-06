@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "create:iron_sheet"
+    },
+    "C": {
+      "tag": "c:barrels/wooden"
+    }
+  },
+  "pattern": [
+    "B",
+    "C",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mpnt:iron_fluid_tank"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:ingots/gold"
+    },
+    "S": {
+      "item": "create:golden_sheet"
+    }
+  },
+  "pattern": [
+    "SCS"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_mpnt:golden_fluid_pipe"
+  }
+}

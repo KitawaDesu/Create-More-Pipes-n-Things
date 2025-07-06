@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:ingots/zinc"
+    },
+    "S": {
+      "item": "create_mpnt:zinc_sheet"
+    }
+  },
+  "pattern": [
+    "SCS"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_mpnt:zinc_fluid_pipe"
+  }
+}

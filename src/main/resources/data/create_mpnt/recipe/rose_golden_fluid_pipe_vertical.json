@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "more_stuff:rose_gold_ingot"
+    },
+    "S": {
+      "item": "create_mpnt:rose_golden_sheet"
+    }
+  },
+  "pattern": [
+    "S",
+    "C",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_mpnt:rose_golden_fluid_pipe"
+  }
+}
