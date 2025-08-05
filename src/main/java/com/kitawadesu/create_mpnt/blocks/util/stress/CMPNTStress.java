@@ -46,20 +46,6 @@ public class CMPNTStress extends ConfigBase {
         return "stressValues.v" + VERSION;
     }
 
-    @Nullable
-    public DoubleSupplier getImpact(Block block) {
-        ResourceLocation id = RegisteredObjectsHelper.getKeyOrThrow(block);
-        ModConfigSpec.ConfigValue<Double> value = this.impacts.get(id);
-        return value == null ? null : value::get;
-    }
-
-    @Nullable
-    public DoubleSupplier getCapacity(Block block) {
-        ResourceLocation id = RegisteredObjectsHelper.getKeyOrThrow(block);
-        ModConfigSpec.ConfigValue<Double> value = this.capacities.get(id);
-        return value == null ? null : value::get;
-    }
-
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setNoImpact() {
         return setImpact(0);
     }

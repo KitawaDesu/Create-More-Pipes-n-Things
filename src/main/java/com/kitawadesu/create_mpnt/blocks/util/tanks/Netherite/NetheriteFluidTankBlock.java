@@ -1,7 +1,7 @@
 package com.kitawadesu.create_mpnt.blocks.util.tanks.Netherite;
 
 import com.kitawadesu.create_mpnt.blocks.entities.CreateMPNTBlockEntities;
-import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.NetheriteFluidTankBlockEntity;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.entity.NetheriteFluidTankBlockEntity;
 import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

@@ -1,8 +1,7 @@
 package com.kitawadesu.create_mpnt.blocks.util.tanks.andesite;
 
 import com.kitawadesu.create_mpnt.blocks.entities.CreateMPNTBlockEntities;
-import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.AndesiteFluidTankBlockEntity;
-import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.GoldenFluidTankBlockEntity;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.entity.AndesiteFluidTankBlockEntity;
 import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 

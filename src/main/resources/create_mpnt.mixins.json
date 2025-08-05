@@ -3,6 +3,13 @@
   "package": "com.kitawadesu.create_mpnt.util.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AbstractFunnelBlockMixin",
+    "BoilerHeatersMixin",
+    "FluidPropagatorMixin",
+    "FluidTankItemMixin",
+    "FunnelBlockEntityMixin",
+    "SawBlockEntityMixin",
+    "SteamEngineBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

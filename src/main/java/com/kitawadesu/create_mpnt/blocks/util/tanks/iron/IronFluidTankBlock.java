@@ -1,8 +1,7 @@
 package com.kitawadesu.create_mpnt.blocks.util.tanks.iron;
 
 import com.kitawadesu.create_mpnt.blocks.entities.CreateMPNTBlockEntities;
-import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.IronFluidTankBlockEntity;
-import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.ZincFluidTankBlockEntity;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.entity.IronFluidTankBlockEntity;
 import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

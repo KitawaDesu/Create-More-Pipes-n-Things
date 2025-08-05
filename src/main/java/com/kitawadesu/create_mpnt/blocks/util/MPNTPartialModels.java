@@ -18,7 +18,23 @@ public class MPNTPartialModels {
             ANDESITE_FLUID_PIPE_CASING = block("andesite_fluid_pipe/casing"),
             BRASS_FLUID_PIPE_CASING = block("brass_fluid_pipe/casing"),
             IRON_FLUID_PIPE_CASING = block("iron_fluid_pipe/casing"),
-            NETHERITE_FLUID_PIPE_CASING = block("netherite_fluid_pipe/casing");
+            NETHERITE_FLUID_PIPE_CASING = block("netherite_fluid_pipe/casing"),
+            ZINC_MECHANICAL_PUMP_COG = block("zinc_mechanical_pump/cog"),
+            GOLDEN_MECHANICAL_PUMP_COG = block("gold_mechanical_pump/cog"),
+            ANDESITE_MECHANICAL_PUMP_COG = block("andesite_mechanical_pump/cog"),
+            BRASS_MECHANICAL_PUMP_COG = block("brass_mechanical_pump/cog"),
+            IRON_MECHANICAL_PUMP_COG = block("iron_mechanical_pump/cog"),
+            NETHERITE_MECHANICAL_PUMP_COG = block("netherite_mechanical_pump/cog"),
+            BRASS_BOILER_GAUGE = block("brass_fluid_tank/gauge"),
+            ZINC_BOILER_GAUGE = block("zinc_fluid_tank/gauge"),
+            ANDESITE_BOILER_GAUGE = block("andesite_fluid_tank/gauge"),
+            GOLDEN_BOILER_GAUGE = block("gold_fluid_tank/gauge"),
+            IRON_BOILER_GAUGE = block("iron_fluid_tank/gauge"),
+            NETHERITE_BOILER_GAUGE = block("netherite_fluid_tank/gauge"),
+            ROSE_GOLDEN_BOILER_GAUGE = block("rose_gold_fluid_tank/gauge"),
+            ROSARITE_BOILER_GAUGE = block("rosarite_fluid_tank/gauge"),
+            VALKYRUM_BOILER_GAUGE = block("valkyrum_fluid_tank/gauge"),
+            PYRAL_BOILER_GAUGE = block("pyral_fluid_tank/gauge");
 
     public static final Map<FluidTransportBehaviour.AttachmentTypes.ComponentPartials, Map<Direction, PartialModel>> ZINC_PIPE_ATTACHMENTS =
             new EnumMap<>(FluidTransportBehaviour.AttachmentTypes.ComponentPartials.class);

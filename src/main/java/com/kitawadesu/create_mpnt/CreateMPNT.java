@@ -2,19 +2,17 @@ package com.kitawadesu.create_mpnt;
 
 import com.kitawadesu.create_mpnt.blocks.CreateMPNTBlocks;
 import com.kitawadesu.create_mpnt.blocks.entities.CreateMPNTBlockEntities;
-import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.*;
-import com.kitawadesu.create_mpnt.blocks.util.MPNTMountedStorageTypes;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.entity.*;
 import com.kitawadesu.create_mpnt.blocks.util.MPNTPartialModels;
-import com.kitawadesu.create_mpnt.compat.more_stuff.blocks.MoreStuffCompatBlocks;
-import com.kitawadesu.create_mpnt.compat.more_stuff.blocks.entities.MoreStuffCompatBlockEntities;
-import com.kitawadesu.create_mpnt.compat.more_stuff.blocks.entities.util.tanks.RosariteFluidTankBlockEntity;
-import com.kitawadesu.create_mpnt.compat.more_stuff.blocks.entities.util.tanks.RoseGoldenFluidTankBlockEntity;
-import com.kitawadesu.create_mpnt.compat.more_stuff.blocks.util.MoreStuffCompatPartialModels;
-import com.kitawadesu.create_mpnt.compat.more_stuff.items.MoreStuffCompatItems;
+import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.PyralFluidTankBlockEntity;
+import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.RosariteFluidTankBlockEntity;
+import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.RoseGoldenFluidTankBlockEntity;
+import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.ValkyrumFluidTankBlockEntity;
+import com.kitawadesu.create_mpnt.compat.blocks.util.CompatPartialModels;
+import com.kitawadesu.create_mpnt.compat.items.CompatItems;
 import com.kitawadesu.create_mpnt.items.CreateMPNTItems;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.slf4j.Logger;
 
@@ -52,17 +50,11 @@ public class CreateMPNT {
 
         CreateMPNTBlocks.register();
         CreateMPNTItems.register();
+        CompatItems.register();
         CreateMPNTBlockEntities.register();
 
         MPNTPartialModels.init();
-
-        if (ModList.get().isLoaded("more_stuff")) {
-            MoreStuffCompatBlocks.register();
-            MoreStuffCompatItems.register();
-            MoreStuffCompatBlockEntities.register();
-
-            MoreStuffCompatPartialModels.init();
-        }
+        CompatPartialModels.init();
     }
 
     public static CreateRegistrate registrate() {
@@ -100,11 +92,10 @@ public class CreateMPNT {
             BrassFluidTankBlockEntity.registerCapabilities(event);
             IronFluidTankBlockEntity.registerCapabilities(event);
             NetheriteFluidTankBlockEntity.registerCapabilities(event);
-
-            if (ModList.get().isLoaded("more_stuff")) {
-                RoseGoldenFluidTankBlockEntity.registerCapabilities(event);
-                RosariteFluidTankBlockEntity.registerCapabilities(event);
-            }
+            RoseGoldenFluidTankBlockEntity.registerCapabilities(event);
+            RosariteFluidTankBlockEntity.registerCapabilities(event);
+            ValkyrumFluidTankBlockEntity.registerCapabilities(event);
+            PyralFluidTankBlockEntity.registerCapabilities(event);
         }
 
         @SubscribeEvent
