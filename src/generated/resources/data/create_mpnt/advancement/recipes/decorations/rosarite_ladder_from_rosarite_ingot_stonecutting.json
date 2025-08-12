@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rosarite_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "more_stuff:rosarite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "create_mpnt:rosarite_ladder_from_rosarite_ingot_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rosarite_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "create_mpnt:rosarite_ladder_from_rosarite_ingot_stonecutting"
+    ]
+  }
+}

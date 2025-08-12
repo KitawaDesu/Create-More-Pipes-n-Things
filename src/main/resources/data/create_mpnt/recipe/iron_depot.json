@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "create:andesite_alloy"
+    },
+    {
+      "item": "create_mpnt:iron_casing"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mpnt:iron_depot"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "create_mpnt:normal_rosarite_funnel"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "create_mpnt:blocks/normal_rosarite_belt_funnel"
+}

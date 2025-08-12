@@ -1,0 +1,7 @@
+{
+	"parent": "create:block/encased_shaft/block",
+	"textures": {
+		"casing": "create_mpnt:block/casing/pyral/casing",
+		"opening": "create_mpnt:block/gearboxes/pyral_gearbox"
+	}
+}

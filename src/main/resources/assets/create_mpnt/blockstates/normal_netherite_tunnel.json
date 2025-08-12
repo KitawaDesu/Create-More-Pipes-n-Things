@@ -1,0 +1,46 @@
+{
+  "variants": {
+    "axis=x,shape=closed": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/straight"
+    },
+    "axis=x,shape=cross": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/cross"
+    },
+    "axis=x,shape=straight": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/straight"
+    },
+    "axis=x,shape=t_left": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/t_left"
+    },
+    "axis=x,shape=t_right": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/t_right"
+    },
+    "axis=x,shape=window": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/window"
+    },
+    "axis=z,shape=closed": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/straight",
+      "y": 90
+    },
+    "axis=z,shape=cross": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/cross",
+      "y": 90
+    },
+    "axis=z,shape=straight": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/straight",
+      "y": 90
+    },
+    "axis=z,shape=t_left": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/t_left",
+      "y": 90
+    },
+    "axis=z,shape=t_right": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/t_right",
+      "y": 90
+    },
+    "axis=z,shape=window": {
+      "model": "create_mpnt:block/tunnel/normal/netherite/window",
+      "y": 90
+    }
+  }
+}

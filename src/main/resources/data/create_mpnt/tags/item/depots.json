@@ -1,0 +1,11 @@
+{
+  "values": [
+    "create:depot",
+    "create_mpnt:copper_depot",
+    "create_mpnt:iron_depot",
+    "create_mpnt:golden_depot",
+    "create_mpnt:brass_depot",
+    "create_mpnt:zinc_depot",
+    "create_mpnt:netherite_depot"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "create:block/encased_shaft/block",
+	"textures": {
+		"casing": "create_mpnt:block/casing/netherite/casing",
+		"opening": "create_mpnt:block/gearboxes/netherite_gearbox"
+	}
+}

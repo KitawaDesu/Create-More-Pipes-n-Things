@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "create_mpnt:smart_andesite_funnel"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "create_mpnt:blocks/smart_andesite_belt_funnel"
+}

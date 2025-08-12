@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_tunnel/window",
+  "textures": {
+    "direction": "create_mpnt:block/funnel/smart/iron/iron_funnel_neutral",
+    "frame": "create_mpnt:block/funnel/smart/iron/iron_funnel_frame",
+    "particle": "minecraft:block/iron_block",
+    "top": "create_mpnt:block/tunnel/smart/iron/tunnel_top_window",
+    "tunnel": "create_mpnt:block/tunnel/smart/iron/tunnel"
+  }
+}
