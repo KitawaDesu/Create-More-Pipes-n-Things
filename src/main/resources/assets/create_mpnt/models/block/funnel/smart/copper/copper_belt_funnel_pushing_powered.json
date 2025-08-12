@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_funnel/block_pushing",
+  "textures": {
+    "base": "create_mpnt:block/funnel/smart/copper/copper_funnel",
+    "block": "minecraft:block/copper_block",
+    "direction": "create_mpnt:block/funnel/smart/copper/copper_funnel_push",
+    "particle": "minecraft:block/copper_block",
+    "redstone": "create_mpnt:block/funnel/smart/copper/copper_funnel_powered"
+  }
+}

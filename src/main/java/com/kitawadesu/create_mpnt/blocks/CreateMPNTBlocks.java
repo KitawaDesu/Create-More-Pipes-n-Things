@@ -1,7 +1,8 @@
 package com.kitawadesu.create_mpnt.blocks;
 
 import com.kitawadesu.create_mpnt.CreateMPNT;
-import com.kitawadesu.create_mpnt.blocks.util.CMPNTSharedProperties;
+import com.kitawadesu.create_mpnt.blocks.util.*;
+import com.kitawadesu.create_mpnt.blocks.util.depots.*;
 import com.kitawadesu.create_mpnt.blocks.util.funnels.*;
 import com.kitawadesu.create_mpnt.blocks.util.pipes.andesite.AndesiteFluidPipeBlock;
 import com.kitawadesu.create_mpnt.blocks.util.pipes.andesite.AndesitePipeAttachmentModel;
@@ -36,6 +37,9 @@ import com.kitawadesu.create_mpnt.blocks.util.tanks.iron.IronFluidTankBlock;
 import com.kitawadesu.create_mpnt.blocks.util.tanks.iron.IronFluidTankModel;
 import com.kitawadesu.create_mpnt.blocks.util.tanks.zinc.ZincFluidTankBlock;
 import com.kitawadesu.create_mpnt.blocks.util.tanks.zinc.ZincFluidTankModel;
+import com.kitawadesu.create_mpnt.blocks.util.tunnels.NormalBeltTunnelBlock;
+import com.kitawadesu.create_mpnt.blocks.util.tunnels.SmartTunnelBlock;
+import com.kitawadesu.create_mpnt.blocks.util.tunnels.ctbehaviour.*;
 import com.kitawadesu.create_mpnt.compat.blocks.util.funnels.PyralFunnel;
 import com.kitawadesu.create_mpnt.compat.blocks.util.funnels.RosariteFunnel;
 import com.kitawadesu.create_mpnt.compat.blocks.util.funnels.RoseGoldenFunnel;
@@ -70,9 +74,15 @@ import com.kitawadesu.create_mpnt.compat.blocks.util.tanks.valkyrum.ValkyrumFlui
 import com.kitawadesu.create_mpnt.compat.blocks.util.tanks.valkyrum.ValkyrumFluidTankModel;
 import com.simibubi.create.*;
 import com.simibubi.create.content.decoration.MetalLadderBlock;
-import com.simibubi.create.content.fluids.drain.ItemDrainBlock;
+import com.simibubi.create.content.decoration.encasing.CasingBlock;
+import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
+import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.fluids.tank.*;
+import com.simibubi.create.content.kinetics.gearbox.GearboxBlock;
+import com.simibubi.create.content.logistics.depot.MountedDepotInteractionBehaviour;
 import com.simibubi.create.content.logistics.funnel.*;
+import com.simibubi.create.content.logistics.tunnel.BrassTunnelBlock;
+import com.simibubi.create.content.logistics.tunnel.BrassTunnelCTBehaviour;
 import com.simibubi.create.foundation.block.render.ReducedDestroyEffects;
 import com.simibubi.create.foundation.data.*;
 import com.tterrag.registrate.util.DataIngredient;
@@ -88,16 +98,497 @@ import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 
 import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
+import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageType.mountedFluidStorage;
+import static com.simibubi.create.api.contraption.storage.item.MountedItemStorageType.mountedItemStorage;
+import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
+import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
+import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static net.minecraft.world.item.Items.*;
 
 @SuppressWarnings("removal")
 public class CreateMPNTBlocks {
-    // Don't duplicate! Assume REGISTRATE is passed in from main mod class
+
     private static final CreateRegistrate REGISTRATE = CreateMPNT.registrate();
+
+    public static final BlockEntry<CasingBlock> ZINC_CASING = REGISTRATE.block("zinc_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(BuilderTransformers.casing(() -> MPNTSpriteShifts.ZINC_CASING))
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> ZINC_ENCASED_SHAFT =
+            REGISTRATE.block("zinc_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, ZINC_CASING::get))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaft("zinc", () -> MPNTSpriteShifts.ZINC_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> ZINC_GEARBOX =
+            REGISTRATE.block("zinc_gearbox", CMPNTGearBoxBlock::new)
+            .initialProperties(CMPNTSharedProperties::regularMetal)
+            .properties(p -> p.sound(SoundType.COPPER))
+            .properties(p -> p.noOcclusion()
+                    .mapColor(MapColor.PODZOL))
+            .transform(CMPNTStress.setNoImpact())
+            .transform(axeOrPickaxe())
+            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.ZINC_CASING)))
+            .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.ZINC_CASING,
+                    (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+            .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+            .item()
+            .transform(customItemModel())
+            .register();
+
+    public static final BlockEntry<ZincDepotBlock> ZINC_DEPOT =
+            REGISTRATE.block("zinc_depot", ZincDepotBlock::new)
+            .initialProperties(CMPNTSharedProperties::regularMetal)
+            .properties(p -> p.sound(SoundType.COPPER))
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+            .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+            .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+            .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+            .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+            .item()
+            .transform(customItemModel("_", "block"))
+            .register();
+
+    public static final BlockEntry<CasingBlock> GOLD_CASING = REGISTRATE.block("gold_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(BuilderTransformers.casing(() -> MPNTSpriteShifts.GOLD_CASING))
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> GOLD_ENCASED_SHAFT =
+            REGISTRATE.block("gold_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, GOLD_CASING::get))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaft("gold", () -> MPNTSpriteShifts.GOLD_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> GOLDEN_GEARBOX =
+            REGISTRATE.block("golden_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.GOLD_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.GOLD_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<GoldenDepotBlock> GOLDEN_DEPOT =
+            REGISTRATE.block("golden_depot", GoldenDepotBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.sound(SoundType.COPPER))
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+            .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+            .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+            .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+            .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+            .item()
+            .transform(customItemModel("_", "block"))
+            .register();
+
+    public static final BlockEntry<CopperDepotBlock> COPPER_DEPOT =
+            REGISTRATE.block("copper_depot", CopperDepotBlock::new)
+                    .initialProperties(SharedProperties::copperMetal)
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> COPPER_ENCASED_SHAFT =
+            REGISTRATE.block("copper_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, AllBlocks.COPPER_CASING::get))
+                    .initialProperties(SharedProperties::copperMetal)
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaft("copper", () -> AllSpriteShifts.COPPER_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> COPPER_GEARBOX =
+            REGISTRATE.block("copper_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::copperMetal)
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.COPPER_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.COPPER_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<BrassDepotBlock> BRASS_DEPOT =
+            REGISTRATE.block("brass_depot", BrassDepotBlock::new)
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> BRASS_GEARBOX =
+            REGISTRATE.block("brass_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.BRASS_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.BRASS_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<CasingBlock> IRON_CASING = REGISTRATE.block("iron_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(BuilderTransformers.casing(() -> MPNTSpriteShifts.IRON_CASING))
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> IRON_ENCASED_SHAFT =
+            REGISTRATE.block("iron_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, IRON_CASING::get))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaft("iron", () -> MPNTSpriteShifts.IRON_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> IRON_GEARBOX =
+            REGISTRATE.block("iron_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.IRON_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.IRON_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<IronDepotBlock> IRON_DEPOT =
+            REGISTRATE.block("iron_depot", IronDepotBlock::new)
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CasingBlock> NETHERITE_CASING = REGISTRATE.block("netherite_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(MPNTBuilderTransformers.netheritecasing(() -> MPNTSpriteShifts.NETHERITE_CASING))
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> NETHERITE_ENCASED_SHAFT =
+            REGISTRATE.block("netherite_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, NETHERITE_CASING::get))
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaftNetherite("netherite", () -> MPNTSpriteShifts.NETHERITE_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> NETHERITE_GEARBOX =
+            REGISTRATE.block("netherite_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.NETHERITE_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.NETHERITE_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .properties(Item.Properties::fireResistant)
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<NetheriteDepotBlock> NETHERITE_DEPOT =
+            REGISTRATE.block("netherite_depot", NetheriteDepotBlock::new)
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .properties(Item.Properties::fireResistant)
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> RAILWAY_ENCASED_SHAFT =
+            REGISTRATE.block("railway_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, AllBlocks.RAILWAY_CASING::get))
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(MPNTBuilderTransformers.encasedShaft("railway", () -> AllSpriteShifts.RAILWAY_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> RAILWAY_GEARBOX =
+            REGISTRATE.block("railway_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.RAILWAY_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.RAILWAY_CASING,
+                            (s, f) -> f.getAxis().isVertical())))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.RAILWAY_CASING_SIDE,
+                            (s, f) -> f.getAxis().isHorizontal())))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<RailwayDepotBlock> RAILWAY_DEPOT =
+            REGISTRATE.block("railway_depot", RailwayDepotBlock::new)
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CasingBlock> ROSE_GOLD_CASING = REGISTRATE.block("rose_gold_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(BuilderTransformers.casing(() -> MPNTSpriteShifts.ROSE_GOLD_CASING))
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> ROSE_GOLD_ENCASED_SHAFT =
+            REGISTRATE.block("rose_gold_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, ROSE_GOLD_CASING::get))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaft("rose_gold", () -> MPNTSpriteShifts.ROSE_GOLD_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> ROSE_GOLDEN_GEARBOX =
+            REGISTRATE.block("rose_golden_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.ROSE_GOLD_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.ROSE_GOLD_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<RoseGoldenDepotBlock> ROSE_GOLDEN_DEPOT =
+            REGISTRATE.block("rose_golden_depot", RoseGoldenDepotBlock::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CasingBlock> ROSARITE_CASING = REGISTRATE.block("rosarite_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(MPNTBuilderTransformers.netheritecasing(() -> MPNTSpriteShifts.ROSARITE_CASING))
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> ROSARITE_ENCASED_SHAFT =
+            REGISTRATE.block("rosarite_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, ROSARITE_CASING::get))
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaftNetherite("rosarite", () -> MPNTSpriteShifts.ROSARITE_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> ROSARITE_GEARBOX =
+            REGISTRATE.block("rosarite_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.ROSARITE_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.ROSARITE_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .properties(Item.Properties::fireResistant)
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<RosariteDepotBlock> ROSARITE_DEPOT =
+            REGISTRATE.block("rosarite_depot", RosariteDepotBlock::new)
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .properties(Item.Properties::fireResistant)
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CasingBlock> VALKYRUM_CASING = REGISTRATE.block("valkyrum_casing", CasingBlock::new)
+            .transform(BuilderTransformers.layeredCasing(() -> MPNTSpriteShifts.VALKYRUM_CASING_SIDE,
+                    () -> MPNTSpriteShifts.VALKYRUM_CASING))
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_CYAN)
+                    .sound(SoundType.COPPER))
+            .lang("Valkyrum Casing")
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> VALKYRUM_ENCASED_SHAFT =
+            REGISTRATE.block("valkyrum_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, VALKYRUM_CASING::get))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaft("valkyrum", () -> MPNTSpriteShifts.VALKYRUM_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> VALKYRUM_GEARBOX =
+            REGISTRATE.block("valkyrum_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.VALKYRUM_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.VALKYRUM_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<ValkyrumDepotBlock> VALKYRUM_DEPOT =
+            REGISTRATE.block("valkyrum_depot", ValkyrumDepotBlock::new)
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .transform(customItemModel("_", "block"))
+                    .register();
+
+    public static final BlockEntry<CasingBlock> PYRAL_CASING = REGISTRATE.block("pyral_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .transform(MPNTBuilderTransformers.netheritecasing(() -> MPNTSpriteShifts.PYRAL_CASING))
+            .properties(p -> p.sound(SoundType.WOOD))
+            .initialProperties(CMPNTSharedProperties::regularMetal)
+            .register();
+
+    public static final BlockEntry<CMPNTEncasedShaftBlock> PYRAL_ENCASED_SHAFT =
+            REGISTRATE.block("pyral_encased_shaft", p -> new CMPNTEncasedShaftBlock(p, PYRAL_CASING::get))
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+                    .transform(MPNTBuilderTransformers.encasedShaftNetherite("pyral", () -> MPNTSpriteShifts.PYRAL_CASING))
+                    .transform(EncasingRegistry.addVariantTo(AllBlocks.SHAFT))
+                    .transform(axeOrPickaxe())
+                    .register();
+
+    public static final BlockEntry<CMPNTGearBoxBlock> PYRAL_GEARBOX =
+            REGISTRATE.block("pyral_gearbox", CMPNTGearBoxBlock::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.noOcclusion()
+                            .mapColor(MapColor.PODZOL))
+                    .transform(CMPNTStress.setNoImpact())
+                    .transform(axeOrPickaxe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(MPNTSpriteShifts.PYRAL_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, MPNTSpriteShifts.PYRAL_CASING,
+                            (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
+                    .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
+                    .item()
+                    .properties(Item.Properties::fireResistant)
+                    .transform(customItemModel())
+                    .register();
+
+    public static final BlockEntry<PyralDepotBlock> PYRAL_DEPOT =
+            REGISTRATE.block("pyral_depot", PyralDepotBlock::new)
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+                    .transform(axeOrPickaxe())
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+                    .transform(displaySource(AllDisplaySources.ITEM_NAMES))
+                    .onRegister(interactionBehaviour(new MountedDepotInteractionBehaviour()))
+                    .transform(mountedItemStorage(AllMountedStorageTypes.DEPOT))
+                    .item()
+                    .transform(customItemModel("_", "block"))
+                    .register();
 
     public static final BlockEntry<ZincFluidPipeBlock> ZINC_FLUID_PIPE = REGISTRATE
             .block("zinc_fluid_pipe", ZincFluidPipeBlock::new)
@@ -426,6 +917,120 @@ public class CreateMPNTBlocks {
                     .clientExtension(() -> () -> new ReducedDestroyEffects())
                     .blockstate(new BeltFunnelGenerator("brass")::generate)
                     .loot((p, b) -> p.dropOther(b, NORMAL_ZINC_FUNNEL.get()))
+                    .register();
+
+    public static final BlockEntry<NormalBeltTunnelBlock> NORMAL_ZINC_TUNNEL =
+            REGISTRATE.block("normal_zinc_tunnel", NormalBeltTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE))
+                    .transform(BuilderTransformers.beltTunnel("zinc", ResourceLocation.withDefaultNamespace("block/polished_andesite")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .register();
+
+    public static final BlockEntry<NormalBeltTunnelBlock> NORMAL_BRASS_TUNNEL =
+            REGISTRATE.block("normal_brass_tunnel", NormalBeltTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE))
+                    .transform(BuilderTransformers.beltTunnel("andesite", ResourceLocation.withDefaultNamespace("block/polished_andesite")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .register();
+
+    public static final BlockEntry<NormalBeltTunnelBlock> NORMAL_COPPER_TUNNEL =
+            REGISTRATE.block("normal_copper_tunnel", NormalBeltTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE))
+                    .transform(BuilderTransformers.beltTunnel("andesite", ResourceLocation.withDefaultNamespace("block/polished_andesite")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(SharedProperties::copperMetal)
+                    .register();
+
+    public static final BlockEntry<NormalBeltTunnelBlock> NORMAL_GOLDEN_TUNNEL =
+            REGISTRATE.block("normal_golden_tunnel", NormalBeltTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE))
+                    .transform(BuilderTransformers.beltTunnel("andesite", ResourceLocation.withDefaultNamespace("block/polished_andesite")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(SharedProperties::softMetal)
+                    .register();
+
+    public static final BlockEntry<NormalBeltTunnelBlock> NORMAL_IRON_TUNNEL =
+            REGISTRATE.block("normal_iron_tunnel", NormalBeltTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE))
+                    .transform(BuilderTransformers.beltTunnel("andesite", ResourceLocation.withDefaultNamespace("block/polished_andesite")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .register();
+
+    public static final BlockEntry<NormalBeltTunnelBlock> NORMAL_NETHERITE_TUNNEL =
+            REGISTRATE.block("normal_netherite_tunnel", NormalBeltTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE))
+                    .transform(BuilderTransformers.beltTunnel("andesite", ResourceLocation.withDefaultNamespace("block/polished_andesite")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .register();
+
+    public static final BlockEntry<SmartTunnelBlock> SMART_ANDESITE_TUNNEL =
+            REGISTRATE.block("smart_andesite_tunnel", SmartTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+                    .transform(BuilderTransformers.beltTunnel("brass", Create.asResource("block/brass_block")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(SharedProperties::stone)
+                    .onRegister(connectedTextures(AndesiteTunnelCTBehaviour::new))
+                    .register();
+
+    public static final BlockEntry<SmartTunnelBlock> SMART_ZINC_TUNNEL =
+            REGISTRATE.block("smart_zinc_tunnel", SmartTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+                    .transform(BuilderTransformers.beltTunnel("brass", Create.asResource("block/brass_block")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .onRegister(connectedTextures(ZincTunnelCTBehaviour::new))
+                    .register();
+
+    public static final BlockEntry<SmartTunnelBlock> SMART_COPPER_TUNNEL =
+            REGISTRATE.block("smart_copper_tunnel", SmartTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+                    .transform(BuilderTransformers.beltTunnel("brass", Create.asResource("block/brass_block")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(SharedProperties::copperMetal)
+                    .onRegister(connectedTextures(CopperTunnelCTBehaviour::new))
+                    .register();
+
+    public static final BlockEntry<SmartTunnelBlock> SMART_GOLDEN_TUNNEL =
+            REGISTRATE.block("smart_golden_tunnel", SmartTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+                    .transform(BuilderTransformers.beltTunnel("brass", Create.asResource("block/brass_block")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(SharedProperties::softMetal)
+                    .onRegister(connectedTextures(GoldenTunnelCTBehaviour::new))
+                    .register();
+
+    public static final BlockEntry<SmartTunnelBlock> SMART_IRON_TUNNEL =
+            REGISTRATE.block("smart_iron_tunnel", SmartTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+                    .transform(BuilderTransformers.beltTunnel("brass", Create.asResource("block/brass_block")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(CMPNTSharedProperties::regularMetal)
+                    .onRegister(connectedTextures(IronTunnelCTBehaviour::new))
+                    .register();
+
+    public static final BlockEntry<SmartTunnelBlock> SMART_NETHERITE_TUNNEL =
+            REGISTRATE.block("smart_netherite_tunnel", SmartTunnelBlock::new)
+                    .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+                    .transform(BuilderTransformers.beltTunnel("brass", Create.asResource("block/brass_block")))
+                    .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+                    .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .onRegister(connectedTextures(NetheriteTunnelCTBehaviour::new))
                     .register();
 
     public static final BlockEntry<NormalBrassFunnel> NORMAL_BRASS_FUNNEL =

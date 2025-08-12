@@ -4,10 +4,13 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractFunnelBlockMixin",
+    "BeltInventoryAccessor",
+    "BeltTunnelInteractionHandlerMixin",
     "BoilerHeatersMixin",
     "FluidPropagatorMixin",
     "FluidTankItemMixin",
     "FunnelBlockEntityMixin",
+    "FunnelItemMixin",
     "SawBlockEntityMixin",
     "SteamEngineBlockEntityMixin"
   ],

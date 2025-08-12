@@ -77,12 +77,6 @@
   "block.create_mpnt.normal_zinc_belt_funnel": "Zinc Funnel",
   "block.create_mpnt.smart_zinc_belt_funnel": "Smart Zinc Funnel",
 
-  "block.create.fluid_pipe": "Copper Fluid Pipe",
-  "block.create.mechanical_pump": "Copper Mechanical Pump",
-  "block.create.fluid_tank": "Copper Fluid Tank",
-  "block.create.brass_funnel": "Smart Brass Funnel",
-  "block.create.andesite_funnel": "Andesite Funnel",
-
   "item.create_mpnt.zinc_fluid_pipe": "Zinc Fluid Pipe",
   "item.create_mpnt.golden_fluid_pipe": "Golden Fluid Pipe",
   "item.create_mpnt.andesite_fluid_pipe": "Andesite Fluid Pipe",

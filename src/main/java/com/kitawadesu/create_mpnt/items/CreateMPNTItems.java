@@ -3,6 +3,8 @@ package com.kitawadesu.create_mpnt.items;
 import com.kitawadesu.create_mpnt.CreateMPNT;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.Create;
+import com.simibubi.create.content.kinetics.gearbox.VerticalGearboxItem;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;

@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "create:fluid_tank",
+    "create_mpnt:zinc_fluid_tank",
+    "create_mpnt:golden_fluid_tank",
+    "create_mpnt:andesite_fluid_tank",
+    "create_mpnt:brass_fluid_tank",
+    "create_mpnt:iron_fluid_tank",
+    "create_mpnt:netherite_fluid_tank",
+    "create_mpnt:rose_golden_fluid_tank",
+    "create_mpnt:rosarite_fluid_tank",
+    "create_mpnt:valkyrum_fluid_tank"
+  ]
+}

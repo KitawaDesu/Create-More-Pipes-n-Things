@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_funnel/block_retracted",
+  "textures": {
+    "base": "create_mpnt:block/funnel/normal/netherite/netherite_funnel",
+    "block": "minecraft:block/netherite_block",
+    "direction": "create_mpnt:block/funnel/normal/netherite/netherite_funnel_neutral",
+    "particle": "minecraft:block/netherite_block",
+    "redstone": "create_mpnt:block/funnel/normal/netherite/netherite_funnel_unpowered"
+  }
+}

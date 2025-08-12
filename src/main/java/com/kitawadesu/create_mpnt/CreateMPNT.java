@@ -2,7 +2,10 @@ package com.kitawadesu.create_mpnt;
 
 import com.kitawadesu.create_mpnt.blocks.CreateMPNTBlocks;
 import com.kitawadesu.create_mpnt.blocks.entities.CreateMPNTBlockEntities;
+import com.kitawadesu.create_mpnt.blocks.entities.util.depots.*;
 import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.entity.*;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tunnels.NormalBeltTunnelBlockEntity;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tunnels.SmartBeltTunnelBlockEntity;
 import com.kitawadesu.create_mpnt.blocks.util.MPNTPartialModels;
 import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.PyralFluidTankBlockEntity;
 import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.RosariteFluidTankBlockEntity;
@@ -96,6 +99,19 @@ public class CreateMPNT {
             RosariteFluidTankBlockEntity.registerCapabilities(event);
             ValkyrumFluidTankBlockEntity.registerCapabilities(event);
             PyralFluidTankBlockEntity.registerCapabilities(event);
+            ZincDepotBlockEntity.registerCapabilities(event);
+            GoldenDepotBlockEntity.registerCapabilities(event);
+            IronDepotBlockEntity.registerCapabilities(event);
+            BrassDepotBlockEntity.registerCapabilities(event);
+            CopperDepotBlockEntity.registerCapabilities(event);
+            NetheriteDepotBlockEntity.registerCapabilities(event);
+            RailwayDepotBlockEntity.registerCapabilities(event);
+            RoseGoldenDepotBlockEntity.registerCapabilities(event);
+            RosariteDepotBlockEntity.registerCapabilities(event);
+            ValkyrumDepotBlockEntity.registerCapabilities(event);
+            PyralDepotBlockEntity.registerCapabilities(event);
+            NormalBeltTunnelBlockEntity.registerCapabilities(event);
+            SmartBeltTunnelBlockEntity.registerCapabilities(event);
         }
 
         @SubscribeEvent

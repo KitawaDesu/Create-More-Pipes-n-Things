@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "fluid_tanks",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "create_mpnt:pyral_sheet"
+    },
+    "C": {
+      "tag": "c:barrels/wooden"
+    }
+  },
+  "pattern": [
+    "B",
+    "C",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mpnt:pyral_fluid_tank"
+  }
+}

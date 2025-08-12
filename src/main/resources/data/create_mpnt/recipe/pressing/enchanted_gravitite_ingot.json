@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "create_mpnt:enchanted_gravitite_ingot"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_mpnt:enchanted_gravitite_sheet"
+    }
+  ]
+}

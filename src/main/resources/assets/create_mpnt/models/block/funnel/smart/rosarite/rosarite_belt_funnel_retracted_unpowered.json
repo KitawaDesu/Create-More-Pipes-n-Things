@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_funnel/block_retracted",
+  "textures": {
+    "base": "create_mpnt:block/funnel/smart/rosarite/rosarite_funnel",
+    "block": "more_stuff:block/rosarite_block",
+    "direction": "create_mpnt:block/funnel/smart/rosarite/rosarite_funnel_neutral",
+    "particle": "more_stuff:block/rosarite_block",
+    "redstone": "create_mpnt:block/funnel/smart/rosarite/rosarite_funnel_unpowered"
+  }
+}

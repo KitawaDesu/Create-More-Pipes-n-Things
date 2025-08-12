@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "mechanical_pumps",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "create:cogwheel"
+    },
+    {
+      "item": "create_mpnt:iron_fluid_pipe"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mpnt:iron_mechanical_pump"
+  }
+}

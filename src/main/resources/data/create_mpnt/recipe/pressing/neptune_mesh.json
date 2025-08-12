@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "aether_treasure_reforging:neptune_mesh"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_mpnt:neptune_sheet"
+    }
+  ]
+}

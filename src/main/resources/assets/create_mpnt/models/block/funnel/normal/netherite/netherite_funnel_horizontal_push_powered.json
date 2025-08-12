@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/funnel/block_horizontal",
+  "textures": {
+    "base": "create_mpnt:block/funnel/normal/netherite/netherite_funnel",
+    "block": "minecraft:block/netherite_block",
+    "direction": "create_mpnt:block/funnel/normal/netherite/netherite_funnel_push",
+    "particle": "minecraft:block/netherite_block",
+    "redstone": "create_mpnt:block/funnel/normal/netherite/netherite_funnel_powered"
+  }
+}

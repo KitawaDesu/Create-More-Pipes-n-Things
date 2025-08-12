@@ -1,0 +1,11 @@
+{
+  "parent": "create:block/funnel/block_vertical_filterless",
+  "textures": {
+    "base": "create_mpnt:block/funnel/normal/copper/copper_funnel",
+    "direction": "create_mpnt:block/funnel/normal/copper/copper_funnel_pull",
+    "frame": "create_mpnt:block/funnel/normal/copper/copper_funnel_frame",
+    "open": "create:block/funnel/funnel_open",
+    "particle": "minecraft:block/copper_block",
+    "redstone": "create_mpnt:block/funnel/normal/copper/copper_funnel_unpowered"
+  }
+}

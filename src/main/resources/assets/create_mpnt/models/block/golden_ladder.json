@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/ladder",
+  "textures": {
+    "0": "create_mpnt:block/ladder/gold/ladder_gold_hoop",
+    "1": "create_mpnt:block/ladder/gold/ladder_gold",
+    "particle": "create_mpnt:block/ladder/gold/ladder_gold"
+  }
+}

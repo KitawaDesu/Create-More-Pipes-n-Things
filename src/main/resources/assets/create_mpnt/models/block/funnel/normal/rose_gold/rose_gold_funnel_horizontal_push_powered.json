@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/funnel/block_horizontal",
+  "textures": {
+    "base": "create_mpnt:block/funnel/normal/rose_gold/rose_golden_funnel",
+    "block": "more_stuff:block/rose_gold_block",
+    "direction": "create_mpnt:block/funnel/normal/rose_gold/rose_golden_funnel_push",
+    "particle": "more_stuff:block/rose_gold_block",
+    "redstone": "create_mpnt:block/funnel/normal/rose_gold/rose_golden_funnel_powered"
+  }
+}

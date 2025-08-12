@@ -2,8 +2,11 @@ package com.kitawadesu.create_mpnt.blocks.entities;
 
 import com.kitawadesu.create_mpnt.CreateMPNT;
 import com.kitawadesu.create_mpnt.blocks.CreateMPNTBlocks;
+import com.kitawadesu.create_mpnt.blocks.entities.util.depots.*;
 import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.entity.*;
 import com.kitawadesu.create_mpnt.blocks.entities.util.tanks.renderer.*;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tunnels.NormalBeltTunnelBlockEntity;
+import com.kitawadesu.create_mpnt.blocks.entities.util.tunnels.SmartBeltTunnelBlockEntity;
 import com.kitawadesu.create_mpnt.blocks.util.MPNTPartialModels;
 import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.PyralFluidTankBlockEntity;
 import com.kitawadesu.create_mpnt.compat.blocks.entities.util.tanks.entity.RosariteFluidTankBlockEntity;
@@ -21,17 +24,124 @@ import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
 import com.simibubi.create.content.fluids.pipes.TransparentStraightPipeRenderer;
 import com.simibubi.create.content.fluids.pump.PumpBlockEntity;
 import com.simibubi.create.content.fluids.pump.PumpRenderer;
-import com.simibubi.create.content.fluids.tank.FluidTankRenderer;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
+import com.simibubi.create.content.kinetics.gearbox.GearboxBlockEntity;
+import com.simibubi.create.content.kinetics.gearbox.GearboxRenderer;
+import com.simibubi.create.content.kinetics.gearbox.GearboxVisual;
+import com.simibubi.create.content.logistics.depot.DepotRenderer;
 import com.simibubi.create.content.logistics.funnel.FunnelBlockEntity;
 import com.simibubi.create.content.logistics.funnel.FunnelRenderer;
 import com.simibubi.create.content.logistics.funnel.FunnelVisual;
+import com.simibubi.create.content.logistics.tunnel.BeltTunnelBlockEntity;
+import com.simibubi.create.content.logistics.tunnel.BeltTunnelRenderer;
+import com.simibubi.create.content.logistics.tunnel.BeltTunnelVisual;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class CreateMPNTBlockEntities {
 
     private static final CreateRegistrate REGISTRATE = CreateMPNT.registrate();
+
+    public static final BlockEntityEntry<KineticBlockEntity> CMPNT_ENCASED_SHAFT = REGISTRATE
+            .blockEntity("cmpnt_encased_shaft", KineticBlockEntity::new)
+            .visual(() -> SingleAxisRotatingVisual::shaft, false)
+            .validBlocks(CreateMPNTBlocks.ZINC_ENCASED_SHAFT,
+                    CreateMPNTBlocks.GOLD_ENCASED_SHAFT,
+                    CreateMPNTBlocks.COPPER_ENCASED_SHAFT,
+                    CreateMPNTBlocks.IRON_ENCASED_SHAFT,
+                    CreateMPNTBlocks.RAILWAY_ENCASED_SHAFT,
+                    CreateMPNTBlocks.NETHERITE_ENCASED_SHAFT,
+                    CreateMPNTBlocks.ROSE_GOLD_ENCASED_SHAFT,
+                    CreateMPNTBlocks.ROSARITE_ENCASED_SHAFT,
+                    CreateMPNTBlocks.VALKYRUM_ENCASED_SHAFT,
+                    CreateMPNTBlocks.PYRAL_ENCASED_SHAFT)
+            .renderer(() -> ShaftRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<GearboxBlockEntity> CMPNT_GEARBOX = REGISTRATE
+            .blockEntity("cmpnt_gearbox", GearboxBlockEntity::new)
+            .visual(() -> GearboxVisual::new, false)
+            .validBlocks(CreateMPNTBlocks.ZINC_GEARBOX,
+                    CreateMPNTBlocks.GOLDEN_GEARBOX,
+                    CreateMPNTBlocks.COPPER_GEARBOX,
+                    CreateMPNTBlocks.BRASS_GEARBOX,
+                    CreateMPNTBlocks.IRON_GEARBOX,
+                    CreateMPNTBlocks.RAILWAY_GEARBOX,
+                    CreateMPNTBlocks.NETHERITE_GEARBOX,
+                    CreateMPNTBlocks.ROSE_GOLDEN_GEARBOX,
+                    CreateMPNTBlocks.ROSARITE_GEARBOX,
+                    CreateMPNTBlocks.VALKYRUM_GEARBOX,
+                    CreateMPNTBlocks.PYRAL_GEARBOX)
+            .renderer(() -> GearboxRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<ZincDepotBlockEntity> ZINC_DEPOT = REGISTRATE
+            .blockEntity("zinc_depot", ZincDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.ZINC_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<GoldenDepotBlockEntity> GOLDEN_DEPOT = REGISTRATE
+            .blockEntity("golden_depot", GoldenDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.GOLDEN_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<IronDepotBlockEntity> IRON_DEPOT = REGISTRATE
+            .blockEntity("iron_depot", IronDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.IRON_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CopperDepotBlockEntity> COPPER_DEPOT = REGISTRATE
+            .blockEntity("copper_depot", CopperDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.COPPER_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<BrassDepotBlockEntity> BRASS_DEPOT = REGISTRATE
+            .blockEntity("brass_depot", BrassDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.BRASS_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<RailwayDepotBlockEntity> RAILWAY_DEPOT = REGISTRATE
+            .blockEntity("railway_depot", RailwayDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.RAILWAY_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<NetheriteDepotBlockEntity> NETHERITE_DEPOT = REGISTRATE
+            .blockEntity("netherite_depot", NetheriteDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.NETHERITE_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<RoseGoldenDepotBlockEntity> ROSE_GOLDEN_DEPOT = REGISTRATE
+            .blockEntity("rose_golden_depot", RoseGoldenDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.ROSE_GOLDEN_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<RosariteDepotBlockEntity> ROSARITE_DEPOT = REGISTRATE
+            .blockEntity("rosarite_depot", RosariteDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.ROSARITE_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<ValkyrumDepotBlockEntity> VALKYRUM_DEPOT = REGISTRATE
+            .blockEntity("valkyrum_depot", ValkyrumDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.VALKYRUM_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<PyralDepotBlockEntity> PYRAL_DEPOT = REGISTRATE
+            .blockEntity("pyral_depot", PyralDepotBlockEntity::new)
+            .validBlocks(CreateMPNTBlocks.PYRAL_DEPOT)
+            .renderer(() -> DepotRenderer::new)
+            .register();
 
     // Register your block entity type here:
     public static final BlockEntityEntry<FluidPipeBlockEntity> ZINC_FLUID_PIPE = REGISTRATE
@@ -237,11 +347,33 @@ public class CreateMPNTBlockEntities {
             .renderer(() -> FunnelRenderer::new)
             .register();
 
+    public static final BlockEntityEntry<NormalBeltTunnelBlockEntity> NORMAL_TUNNEL = REGISTRATE
+            .blockEntity("normal_tunnel", NormalBeltTunnelBlockEntity::new)
+            .visual(() -> BeltTunnelVisual::new)
+            .validBlocks(
+                    CreateMPNTBlocks.NORMAL_ZINC_TUNNEL,
+                    CreateMPNTBlocks.NORMAL_BRASS_TUNNEL,
+                    CreateMPNTBlocks.NORMAL_COPPER_TUNNEL,
+                    CreateMPNTBlocks.NORMAL_NETHERITE_TUNNEL,
+                    CreateMPNTBlocks.NORMAL_IRON_TUNNEL,
+                    CreateMPNTBlocks.NORMAL_GOLDEN_TUNNEL
+            )
+            .renderer(() -> BeltTunnelRenderer::new)
+            .register();
 
-
-
-
-
+    public static final BlockEntityEntry<SmartBeltTunnelBlockEntity> SMART_TUNNEL = REGISTRATE
+            .blockEntity("brass_tunnel", SmartBeltTunnelBlockEntity::new)
+            .visual(() -> BeltTunnelVisual::new)
+            .validBlocks(
+                    CreateMPNTBlocks.SMART_ANDESITE_TUNNEL,
+                    CreateMPNTBlocks.SMART_ZINC_TUNNEL,
+                    CreateMPNTBlocks.SMART_COPPER_TUNNEL,
+                    CreateMPNTBlocks.SMART_NETHERITE_TUNNEL,
+                    CreateMPNTBlocks.SMART_IRON_TUNNEL,
+                    CreateMPNTBlocks.SMART_GOLDEN_TUNNEL
+            )
+            .renderer(() -> BeltTunnelRenderer::new)
+            .register();
 
     // Register your block entity type here:
     public static final BlockEntityEntry<FluidPipeBlockEntity> ROSE_GOLDEN_FLUID_PIPE = REGISTRATE

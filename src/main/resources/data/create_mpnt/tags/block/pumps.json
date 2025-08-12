@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "create:mechanical_pump",
+    "create_mpnt:rose_golden_mechanical_pump",
+    "create_mpnt:rosarite_mechanical_pump",
+    "create_mpnt:zinc_mechanical_pump",
+    "create_mpnt:golden_mechanical_pump",
+    "create_mpnt:andesite_mechanical_pump",
+    "create_mpnt:brass_mechanical_pump",
+    "create_mpnt:iron_mechanical_pump",
+    "create_mpnt:netherite_mechanical_pump",
+    "create_mpnt:valkyrum_mechanical_pump"
+  ]
+}

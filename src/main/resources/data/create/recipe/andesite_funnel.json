@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "normal_funnels",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "create:andesite_alloy"
+    },
+    "K": {
+      "item": "minecraft:dried_kelp"
+    }
+  },
+  "pattern": [
+    "A",
+    "K"
+  ],
+  "result": {
+    "count": 2,
+    "id": "create:andesite_funnel"
+  }
+}

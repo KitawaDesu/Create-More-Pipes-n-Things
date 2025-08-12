@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "create:fluid_pipe",
+    "create:glass_fluid_pipe",
+    "create_mpnt:rose_golden_fluid_pipe",
+    "create_mpnt:glass_rose_golden_fluid_pipe",
+    "create_mpnt:rosarite_fluid_pipe",
+    "create_mpnt:glass_rosarite_fluid_pipe",
+    "create_mpnt:zinc_fluid_pipe",
+    "create_mpnt:glass_zinc_fluid_pipe",
+    "create_mpnt:golden_fluid_pipe",
+    "create_mpnt:glass_golden_fluid_pipe",
+    "create_mpnt:andesite_fluid_pipe",
+    "create_mpnt:glass_andesite_fluid_pipe",
+    "create_mpnt:brass_fluid_pipe",
+    "create_mpnt:glass_brass_fluid_pipe",
+    "create_mpnt:iron_fluid_pipe",
+    "create_mpnt:glass_iron_fluid_pipe",
+    "create_mpnt:netherite_fluid_pipe",
+    "create_mpnt:glass_netherite_fluid_pipe",
+    "create_mpnt:valkyrum_fluid_pipe",
+    "create_mpnt:glass_valkyrum_fluid_pipe"
+  ]
+}

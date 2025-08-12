@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_funnel/block_extended",
+  "textures": {
+    "base": "create_mpnt:block/funnel/normal/valkyrum/valkyrum_funnel",
+    "block": "aether_treasure_reforging:block/construction/valkyrum_block_top",
+    "direction": "create_mpnt:block/funnel/normal/valkyrum/valkyrum_funnel_neutral",
+    "particle": "aether_treasure_reforging:block/construction/valkyrum_block_top",
+    "redstone": "create_mpnt:block/funnel/normal/valkyrum/valkyrum_funnel_unpowered"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "aether:hellfire_stone"
+    }
+  ],
+  "processing_time": 350,
+  "results": [
+    {
+      "chance": 0.125,
+      "id": "create_mpnt:valkyrum_nugget"
+    },
+    {
+      "chance": 0.1,
+      "id": "create_mpnt:pyral_nugget"
+    }
+  ]
+}

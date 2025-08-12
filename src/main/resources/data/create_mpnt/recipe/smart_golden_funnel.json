@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "smart_funnels",
+  "category": "misc",
+  "key": {
+    "T": {
+      "item": "create:electron_tube"
+    },
+    "I": {
+      "item": "minecraft:gold_ingot"
+    },
+    "K": {
+      "item": "minecraft:dried_kelp"
+    }
+  },
+  "pattern": [
+    " T ",
+    " I ",
+    " K "
+  ],
+  "result": {
+    "count": 2,
+    "id": "create_mpnt:smart_golden_funnel"
+  }
+}

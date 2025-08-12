@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "aether_treasure_reforging:pyral_ingot"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_mpnt:pyral_sheet"
+    }
+  ]
+}

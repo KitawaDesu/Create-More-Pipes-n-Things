@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 750,
+  "experience": 0.1,
+  "group": "coal",
+  "ingredient": {
+    "item": "aether:carved_stone"
+  },
+  "result": {
+    "id": "aether:hellfire_stone"
+  }
+}

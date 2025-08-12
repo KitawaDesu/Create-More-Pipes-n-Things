@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_funnel/block_pushing",
+  "textures": {
+    "base": "create_mpnt:block/funnel/normal/pyral/pyral_funnel",
+    "block": "aether_treasure_reforging:block/construction/pyral_block",
+    "direction": "create_mpnt:block/funnel/normal/pyral/pyral_funnel_push",
+    "particle": "aether_treasure_reforging:block/construction/pyral_block",
+    "redstone": "create_mpnt:block/funnel/normal/pyral/pyral_funnel_unpowered"
+  }
+}
